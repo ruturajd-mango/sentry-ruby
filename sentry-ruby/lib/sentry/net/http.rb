@@ -84,4 +84,4 @@ module Sentry
   end
 end
 
-Sentry.register_patch(:http, Sentry::Net::HTTP, Net::HTTP)
+# Sentry.register_patch(:http, Sentry::Net::HTTP, Net::HTTP)
