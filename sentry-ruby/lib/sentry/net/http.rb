@@ -31,29 +31,30 @@ module Sentry
       #
       # So we're only instrumenting request when `Net::HTTP` is already started
       def request(req, body = nil, &block)
-        return super unless started? && Sentry.initialized?
-        return super if from_sentry_sdk?
+        return super
+        # return super unless started? && Sentry.initialized?
+        # return super if from_sentry_sdk?
 
-        Sentry.with_child_span(op: OP_NAME, start_timestamp: Sentry.utc_now.to_f, origin: SPAN_ORIGIN) do |sentry_span|
-          request_info = extract_request_info(req)
+        # Sentry.with_child_span(op: OP_NAME, start_timestamp: Sentry.utc_now.to_f, origin: SPAN_ORIGIN) do |sentry_span|
+        #   request_info = extract_request_info(req)
 
-          if propagate_trace?(request_info[:url])
-            set_propagation_headers(req)
-          end
+        #   if propagate_trace?(request_info[:url])
+        #     set_propagation_headers(req)
+        #   end
 
-          res = super
-          response_status = res.code.to_i
+        #   res = super
+        #   response_status = res.code.to_i
 
-          if record_sentry_breadcrumb?
-            record_sentry_breadcrumb(request_info, response_status)
-          end
+        #   if record_sentry_breadcrumb?
+        #     record_sentry_breadcrumb(request_info, response_status)
+        #   end
 
-          if sentry_span
-            set_span_info(sentry_span, request_info, response_status)
-          end
+        #   if sentry_span
+        #     set_span_info(sentry_span, request_info, response_status)
+        #   end
 
-          res
-        end
+        #   res
+        # end
       end
 
       private
